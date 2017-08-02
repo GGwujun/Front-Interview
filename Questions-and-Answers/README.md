@@ -29,9 +29,7 @@
 
 - Doctype作用？标准模式与兼容模式各有什么区别?
 
-		（1）、<!DOCTYPE>声明位于位于HTML文档中的第一行，处于 <html> 标签之前。
-		
-		告知浏览器的解析器用什么文档标准解析这个文档。DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
+		（1）、<!DOCTYPE>声明位于位于HTML文档中的第一行，处于 <html> 标签之前。告知浏览器的解析器用什么文档标准解析这个文档。DOCTYPE不存在或格式不正确会导致文档以兼容模式呈现。
 
 		（2）、标准模式的排版 和JS运作模式都是以该浏览器支持的最高标准运行。在兼容模式中，页面以宽松的向后兼容的方式显示,模拟老式浏览器的行为以防止站点无法工作。
 
@@ -61,11 +59,13 @@
 - 页面导入样式时，使用link和@import有什么区别？
 
 
-		（1）link属于XHTML标签，除了加载CSS外，还能用于定义RSS, 定义rel连接属性等作用；而@import是CSS提供的，只能用于加载CSS;
+		（1）link属于HTML标签，除了加载CSS外，还能用于定义RSS, 定义rel连接属性等作用；而@import是CSS提供的，只能用于加载CSS;
 
 		（2）页面被加载的时，link会同时被加载，而@import引用的CSS会等到页面被加载完再加载;
 
-		（3）import是CSS2.1 提出的，只在IE5以上才能被识别，而link是XHTML标签，无兼容问题;
+		（3）import是CSS2.1 提出的，只在IE5以上才能被识别，而link是HTML标签，无兼容问题;
+		
+		（4）link方式的样式的权重高于@import的权重;
 
 
 - 介绍一下你对浏览器内核的理解？
@@ -121,10 +121,12 @@ HTML5？
 - 简述一下你对HTML语义化的理解？
 
 		用正确的标签做正确的事情。
+		去掉或者丢失样式的时候能够让页面呈现出清晰的结构;
 	    html语义化让页面的内容结构化，结构更清晰，便于对浏览器、搜索引擎解析;
 	    即使在没有样式CSS情况下也以一种文档格式显示，并且是容易阅读的;
 	    搜索引擎的爬虫也依赖于HTML标记来确定上下文和各个关键字的权重，利于SEO;
-	    使阅读源代码的人对网站更容易将网站分块，便于阅读维护理解。
+	    使阅读源代码的人对网站更容易将网站分块，便于阅读维护理解;
+		便于团队开发和维护，语义化更具可读性，是下一步吧网页的重要动向，遵循W3C标准的团队都遵循这个标准，可以减少差异化;
 
 
 
@@ -266,7 +268,9 @@ HTML5？
 
 - CSS选择符有哪些？哪些属性可以继承？
 
-		*   1.id选择器（ # myid）
+		*   选择符：
+		
+			1.id选择器（ # myid）
 			2.类选择器（.myclassname）
 			3.标签选择器（div, h1, p）
 			4.相邻选择器（h1 + p）
@@ -279,8 +283,6 @@ HTML5？
 		*   可继承的样式： font-size font-family color, UL LI DL DD DT;
 
 		*   不可继承的样式：border padding margin width height ;
-
-
 
 - CSS优先级算法如何计算？
 
@@ -298,11 +300,11 @@ HTML5？
 			p:first-of-type	选择属于其父元素的首个 <p> 元素的每个 <p> 元素。
 			p:last-of-type	选择属于其父元素的最后 <p> 元素的每个 <p> 元素。
 	        p:only-of-type	选择属于其父元素唯一的 <p> 元素的每个 <p> 元素。
-			p:only-child		选择属于其父元素的唯一子元素的每个 <p> 元素。
+			p:only-child	选择属于其父元素的唯一子元素的每个 <p> 元素。
 			p:nth-child(2)	选择属于其父元素的第二个子元素的每个 <p> 元素。
 
 			::after			在元素之前添加内容,也可以用来做清除浮动。
-			::before			在元素之后添加内容
+			::before		在元素之后添加内容
 	 	    :enabled  		
 			:disabled 		控制表单控件的禁用状态。
 			:checked        单选框或复选框被选中。
@@ -390,19 +392,36 @@ HTML5？
 		  table       	此元素会作为块级表格来显示。
 		  inherit     	规定应该从父元素继承 display 属性的值。
 
+- 什么是 FOUC（无样式内容闪烁）？你如何来避免 FOUC？
+
+		<style type="text/css" media="all">@import "../fouc.css";</style>
+	 
+		而引用CSS文件的@import就是造成这个问题的罪魁祸首。IE会先加载整个HTML文档的DOM，然后再去导入外部的CSS文件，
+	
+		因此，在页面DOM加载完成到CSS导入完成中间会有一段时间页面上的内容是没有样式的，这段时间的长短跟网速，电脑速度都有关系。
+
+		解决方法简单的出奇，只要在<head>之间加入一个<link>或者<script>元素就可以了。
 
 - position的值relative和absolute定位原点是？
 
 		  absolute
 			生成绝对定位的元素，相对于值不为 static的第一个父元素进行定位。
 		  fixed （老IE不支持）
-			生成绝对定位的元素，相对于浏览器窗口进行定位。
+			生成绝对定位的元素，通常相对于浏览器窗口或 frame 进行定位。
 		  relative
-			生成相对定位的元素，相对于其正常位置进行定位。
+			生成相对定位的元素，相对于其在普通流中的位置进行定位。
 		  static
 			默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right z-index 声明）。
+		  sticky 
+			生成粘性定位的元素，容器的位置根据正常文档流计算得出
 		  inherit
 			规定从父元素继承 position 属性的值。
+			
+- position:absolute和float属性的异同
+
+		共同点：对内联元素设置float和absolute属性，可以让元素脱离文档流，并且可以设置其宽高。
+		
+		不同点：float仍会占据位置，absolute会覆盖文档流中的其他元素。
 
 - CSS3有哪些新特性？
 
@@ -427,6 +446,16 @@ HTML5？
 		 在布局上有了比以前更加灵活的空间。
 
 		 具体：http://www.w3cplus.com/css3/flexbox-basics.html
+		 
+- 介绍一下box-sizing属性？
+
+		box-sizing属性主要用来控制元素的盒模型的解析模式。默认值是content-box。
+		
+		content-box：让元素维持W3C的标准盒模型。元素的宽度/高度由border + padding + content的宽度/高度决定，设置width/height属性指的是content部分的宽/高;
+		
+		border-box：让元素维持IE传统盒模型（IE6以下版本和IE6~7的怪异模式）。设置width/height属性指的是border + padding + content;
+		
+		标准浏览器下，按照W3C规范对盒模型解析，一旦修改了元素的边框或内距，就会影响元素的盒子尺寸，就不得不重新计算元素的盒子尺寸，从而影响整个页面的布局;
 
 - 用纯CSS创建一个三角形的原理是什么？
 
@@ -546,6 +575,12 @@ HTML5？
 	如果目标元素为table,visibility:collapse;将table隐藏,但是会占据页面布局空间.
 	仅在Firefox下起作用,IE会显示元素,Chrome会将元素隐藏,但是占据空间.
 
+- display:none和visibility:hidden的区别？
+
+	display:none  隐藏对应的元素，在文档布局中不再给它分配空间，它各边的元素会合拢，就当他从来不存在。
+	
+	visibility:hidden  隐藏对应的元素，但是在文档布局中仍保留原来的空间。
+	
 - position跟display、margin collapse、overflow、float这些特性相互叠加后会怎么样？
 
 	如果元素的display为none,那么元素不被渲染,position,float不起作用,如果元素拥有position:absolute;或者position:fixed;属性那么元素将为绝对定位,float不起作用.如果元素float属性不是none,元素会脱离文档流,根据float属性值来显示.有浮动,绝对定位,inline-block属性的元素,margin不会和垂直方向上的其他元素margin折叠.
@@ -584,31 +619,30 @@ HTML5？
 
 - 请解释一下为什么需要清除浮动？清除浮动的方式
 
-	清除浮动是为了清除使用浮动元素产生的影响。浮动的元素，高度会塌陷，而高度的塌陷使我们页面后面的布局不能正常显示。
 
-		1、父级div定义height；
-		2、父级div 也一起浮动；
+	浮动元素脱离文档流，不占据空间。浮动元素碰到包含它的边框或者浮动元素的边框停留
+	
+	清除浮动是为了清除使用浮动元素产生的影响。浮动的元素，会造成父级元素高度塌陷，而高度的塌陷使我们页面后面的布局不能正常显示。
+	
+	与浮动元素同级的非浮动元素（内联元素）会跟随其后
+	
+	若非第一个元素浮动，则该元素之前的元素也需要浮动，否则会影响页面显示的结构
+
+		1、浮动外部元素；
+		2、利用空标签，<div style="clear:both;"></div>（缺点：不过这个办法会增加额外的标签使HTML结构看起来不够简洁；
 		3、常规的使用一个class；
-			.clearfix::before, .clearfix::after {
+			.clearfix:after {
 			    content: " ";
-			    display: table;
-			}
-			.clearfix::after {
-			    clear: both;
+			    display: block;
+				height: 0;
+				clear: both;
+				visibility: hidden;
 			}
 			.clearfix {
 			    *zoom: 1;
 			}
-
-		4、SASS编译的时候，浮动元素的父级div定义伪类:after
-			&::after,&::before{
-			    content: " ";
-		        visibility: hidden;
-		        display: block;
-		        height: 0;
-		        clear: both;
-			}
-
+		4、设置overflow为hidden或者auto
+		
 		解析原理：
 		1) display:block 使生成的元素以块级元素显示,占满剩余空间;
 		2) height:0 避免生成内容破坏原有布局的高度。
